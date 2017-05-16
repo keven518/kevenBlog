@@ -4,17 +4,18 @@ var user_model = require('../app/models/userModel');
 var callback = require('./callback');
 module.exports = {
 //添加数据的方法
- add: function (req, res) {
+ find: function (req, res) {
 //获取连接
   pool.getConnection(function(err, connection) {
 // 获取前台页面传过来的参数
    var param = req.query || req.params;
 //执行插入语句
-   connection.query(user_model.user.insert, [param.name, param.age], function(err, result) {
-   if(result) {
+   connection.query(user_model.article.queryAll, function(err, result) {
+   console.log(err);
+   if(!result) {
     result = {
     code: 200,
-    msg:'成功增加一条数据'
+    msg:'查找失败'
     };
    }
 //返回结果
