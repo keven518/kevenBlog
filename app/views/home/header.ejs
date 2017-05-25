@@ -9,7 +9,10 @@
   <% } %>
   <link rel="stylesheet" type="text/css" href="/components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/dist/css/icon.css">
-  <link rel="stylesheet" type="text/css" href="/dist/css/paging.css">
-  <link rel="stylesheet" type="text/css" href="/dist/private/index.css">
+  <% cssArr.forEach(function(css){%>
+    <link rel="stylesheet" type="text/css" href="/dist/<%= css %>">
+  <% }) %>
+  <script src="/dist/js/jquery-1.11.2.js"></script>
+  <script src="/dist/js/bootstrap.min.js"></script>
 </head>
 <body>

@@ -10,10 +10,10 @@ var pool = mysql.createPool({
     database: 'kvblog'
 });
 
-function query(sql, callback) {
+function query(sql, arr, callback) {
     pool.getConnection(function (err, connection) {
         // Use the connection
-        connection.query(sql, function (err, rows) {
+        connection.query(sql, arr, function (err, rows) {
             callback(err, rows);
             connection.release();//释放链接
         });

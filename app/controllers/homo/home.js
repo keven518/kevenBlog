@@ -9,49 +9,80 @@ var express = require('express'),
   fs = require('fs');
 
 module.exports = function (app) {
-  app.use('/', router);
+  app.use('/home', router);
 };
 
-router.get('/addUser', function(req, res, next) {
- user_controller.add(req, res, next);
-});
 
 /**
  * 查询列表页
  */
-// router.get('/', function (req, res, next) {
-//   var articles = [new Article(), new Article()];
-//   var data = [];
-//   db.query('select * from kvblog_article LIMIT 0,10', function (err, rows) {
-//       if (err) {
-//           res.json({});  // this renders "views/users.html"
-//       } else {
-//           data = rows;
-//           res.render('index', {
-//             title: 'Generator-Express MVC',
-//             articles: articles,
-//             jsArr: ['index'],
-//             data: data
-//           });
-//       }
-//   })
-// });
-
-/**
- * 查询列表页
- */
-router.get('/kv', function (req, res, next) {
-    article_controller.find(req, res, next);
-});
-
 router.get('/', function (req, res, next) {
-  res.render('home/index', {
-    title: 'asdf',
-    articles: 'articles',
-    jsArr: ['index'],
-    data: []
+  var data = [];
+  db.query('select * from kvblog_article ORDER BY publishtime DESC', function (err, rows) {
+      if (err) {
+          res.json({});  // this renders "views/users.html"
+      } else {
+          data = rows;
+
+
+          var pageNum = Math.abs(parseInt(req.query.page || 1, 10));
+          var pageSize = 10;
+
+          var totalCount = data.length;
+          var pageCount = Math.ceil(totalCount / pageSize);
+
+          if (pageNum > pageCount) {
+            pageNum = pageCount;
+          }
+          
+          // res.send('req');
+
+          res.render('home/index', {
+            title: 'Generator-Express MVC',
+            jsArr: ['page/query', 'page/paging'],
+            cssArr: ['css/paging.css', 'private/index.css'],
+            totalCount: totalCount,
+            current: req.query.page || 1,
+            data: data.slice((pageNum - 1) * pageSize, pageNum * pageSize)
+          });
+      }
+  })
+});
+
+router.get('/show/:id', function (req, res, next) {
+  // res.send('kv')
+  db.query("select * from kvblog_article WHERE id=?", [req.params.id], function (err, rows) {
+    if (err) {
+      res.end('新增失败：' + err);
+    } else {      
+      // res.send('req.params');
+      // res.send(rows[0]);
+      res.render('home/show', {
+        title: 'Generator-Express MVC',
+        jsArr: [],
+        cssArr: ['private/show.css'],
+        data: rows[0]
+      })
+
+
+    }
   })
 })
+
+router.get('/sh/:id', function (req, res, next) {
+  db.query("select * from kvblog_article WHERE id=?", [req.params.id], function (err, rows) {
+    if (err) {
+      res.end('新增失败：' + err);
+    } else {      
+      // res.send(req.params);
+      res.send(rows[0]['content']);
+
+
+    }
+  })
+})
+
+
 
 /**
  * 新增页面跳转
@@ -105,3 +136,16 @@ router.get('/', function (req, res, next) {
 //     res.end(util.inspect({fields: fields, files: filesTmp}));
 //  });
 // });
+
+
+
+router.get('/addUser', function(req, res, next) {
+ user_controller.add(req, res, next);
+});
+
+/**
+ * 查询列表页
+ */
+router.get('/kv', function (req, res, next) {
+    article_controller.find(req, res, next);
+});

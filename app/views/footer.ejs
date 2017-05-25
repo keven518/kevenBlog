@@ -1,15 +1,7 @@
-<script type="text/javascript" src="/dist/js/jquery.min.js"></script>
 
-<% jsArr.forEach(function(item){%>
-    <script src="/dist/js/<%=item%>.js"></script>
+<% jsArr.forEach(function(js){%>
+    <script src="/dist/js/page/<%= js %>.js"></script>
 <% }) %>
-<script type="text/javascript" src="/dist/js/page/query.js"></script>
-<script type="text/javascript" src="/dist/js/page/paging.js"></script>
-<script>
-$('#pageTool').Paging({pagesize:10,count:100,callback:function(page,size,count){
-  console.log(arguments)
-  alert('当前第 ' +page +'页,每页 '+size+'条,总页数：'+count+'页')
-  }});
-</script>
+
 </body>
 </html>
