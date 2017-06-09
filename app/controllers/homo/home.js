@@ -6,7 +6,8 @@ var express = require('express'),
   user_controller = require('../../../util/userCtrl'),
   article_controller = require('../../../util/articleCtrl'),
   util = require('util'),
-  fs = require('fs');
+  fs = require('fs'),
+  nodemailer = require('nodemailer');
 
 module.exports = function (app) {
   app.use('/home', router);
@@ -149,3 +150,54 @@ router.get('/addUser', function(req, res, next) {
 router.get('/kv', function (req, res, next) {
     article_controller.find(req, res, next);
 });
+
+
+
+/**/
+router.get('/mail', function (req, res, next) {
+  
+  var transporter = nodemailer.createTransport({  
+    service: 'qq',  
+    port: 465, // SMTP 端口
+    secureConnection: true, // 使用 SSL
+    auth: {  
+      user: '48655423@qq.com',  
+      pass: 'vhveevmecddycahd' //授权码,通过QQ获取  
+    
+    }  
+    });  
+    var mailOptions = {  
+      from: '48655423@qq.com', // 发送者  
+      to: '957314724@qq.com,1967126223@qq.com,3121477827@qq.com,342077890@qq.com', // 接受者,可以同时发送多个,以逗号隔开  
+      subject: '柯文邮件发送', // 标题  
+      //text: 'Hello world', // 文本  
+      html: `<h2>nodemailer基本使用:</h2><h3>  
+      <a href="http://blog.csdn.net/zzwwjjdj1/article/details/51878392">  
+      http://blog.csdn.net/zzwwjjdj1/article/details/51878392</a>
+      <br/>
+      祝早日收到offer 第三次发邮件了 0609。</h3>`   
+    };  
+    
+    transporter.sendMail(mailOptions, function (err, info) {  
+      if (err) {  
+        console.log(err);  
+        return;  
+      }  
+    ''
+      console.log('发送成功'); 
+      console.log(info); 
+      res.send('发送成功: ' + JSON.stringify(info));
+    });  
+})
+
+router.get('/yzm', function(req, res, next) {
+    var ary = ccap.get();
+
+    var txt = ary[0];
+
+    var buf = ary[1];
+
+    res.end(buf);
+
+    console.log(txt);
+})
