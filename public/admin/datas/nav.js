@@ -38,6 +38,10 @@ function nav () {
 		"title": "栏目管理",
 		"icon": "fa-table",
 		"href": "begtable.html"
+	},{
+		"title": "新增栏目",
+		"icon": "fa-table",
+		"href": "/admin/addCate"
 	}]
 },{
 	"title": "内容管理",

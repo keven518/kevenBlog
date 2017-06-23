@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>添加顶级分类</title>
+<script src="/dist/js/jquery-1.11.2.js"></script>
+<link rel="stylesheet" href="/dist/css/bootstrap.css"/>
+</head>
+<body>
+<div class="container">
+
+<h2>增加顶级分类</h2>
+<input type="text" class="form-control"><br/>
+<input type="text" class="form-control"><br/>
+<input type="text" class="form-control"><br/>
+<input type="text" class="form-control"><br/>
+<input type="text" class="form-control"><br/>
+<input type="text" class="form-control"><br/>
+<button class="btn btn-primary" onclick="sub()">提交</button>
+
+</div>
+</body>
+</html>
+<script>
+function sub(){
+var arr = [];
+$('.form-control').each(function(){
+
+var item = $(this).val();
+if($.trim(item)){
+arr.push(item);
+}
+});
+
+$.ajax({
+url:'/admin/addTopCate',
+type:'post',
+data:{items:arr},
+complete:function(data){
+  console.log(data);
+}
+});
+
+console.log(arr);
+
+}
+</script>
